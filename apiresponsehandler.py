@@ -27,8 +27,10 @@ class APIResponseHandler(object):
             response_dict = json.loads(response_json)
         except JSONDecodeError:
             raise
-        except ResponseError:
-            raise
+        
+        for key in response_dict.keys():
+            if key not in self.NATIONS:
+                raise ResponseError
 
 
     def parse_response_json(self, repsonse_json):

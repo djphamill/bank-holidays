@@ -29,8 +29,8 @@ class TestAPIResponseHandler(TestCase):
         self.assertListEqual(dates, expected_dates)
     
     @parameterized.expand([
-        ("not josn format", "hello", JSONDecodeError),
-        ("doesn't start with nation", "{'dates': [2020-01-01, 2021-01-01]}", ResponseError),
+        ("not josn format", 'hello', JSONDecodeError),
+        ("doesn't start with nation", '{"dates":["2020-01-01","2021-01-01"]}', ResponseError),
         ("dates are of the wrong format", "{'england-and-wales':{'division':'england-and-wales', 'events':[{'dates':'01-01-2020'}]}}", ResponseError)
     ])
     def test_validate_respone_json_raises_exception(self, _, response_json, exception):
