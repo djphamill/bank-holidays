@@ -1,6 +1,8 @@
 # Class to handle response from API
 import json 
 
+from json import JSONDecodeError
+
 class APIResponseHandler(object):
     """
     Class to handle response from API
@@ -17,6 +19,18 @@ class APIResponseHandler(object):
     EVENTS = 'events'
     DATE = 'date'
 
+    def validate_response_json(self, response_json):
+        """
+        Ensure the API has not changed the format of its json
+        """
+        try:
+            response_dict = json.loads(response_json)
+        except JSONDecodeError:
+            raise
+        except ResponseError:
+            raise
+
+
     def parse_response_json(self, repsonse_json):
         """
         Take the response json and return a list of dates that are bank holidays
@@ -28,3 +42,9 @@ class APIResponseHandler(object):
                 bank_holiday_dates.append(event[self.DATE])
         
         return bank_holiday_dates
+
+class ResponseError(Exception):
+    """
+    Class for handling response errors
+    """
+    
