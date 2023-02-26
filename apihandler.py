@@ -1,12 +1,15 @@
 # Class to handle response from API
 import json 
+import requests 
 
 from json import JSONDecodeError
 
-class APIResponseHandler(object):
+class APIHandler(object):
     """
     Class to handle response from API
     """
+
+    API_ENDPOINT = 'https://www.gov.uk/bank-holidays.json'
 
     ENGLAND_AND_WALES = 'england-and-wales'
     SCOTLAND = 'scotland'
@@ -18,6 +21,13 @@ class APIResponseHandler(object):
 
     EVENTS = 'events'
     DATE = 'date'
+
+    def call_endpoint(self):
+        """
+        Make GET request to API endpoint
+        """
+        return requests.get(self.API_ENDPOINT)
+
 
     def validate_response_json(self, response_json):
         """
