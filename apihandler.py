@@ -45,7 +45,7 @@ class APIHandler(object):
             if today in bank_holidays:
                 return True, self.RESPONSE_YES
             else:
-                return False, self.RESPONSE_NO
+                return True, self.RESPONSE_NO
         except:
             return False, self.RESPONSE_ERROR
 

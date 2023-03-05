@@ -1,5 +1,4 @@
 import ast
-import datetime
 from json import JSONDecodeError, loads
 from parameterized import parameterized
 from unittest import TestCase
@@ -74,13 +73,15 @@ class TestAPIResponseHandler(TestCase):
         """
         Test the is_it_a_bank_holiday method for Good Friday
         """
-        is_good_friday_a_bank_holiday, _ = self.api_handler.is_it_a_bank_holiday()
-        self.assertTrue(is_good_friday_a_bank_holiday)
+        sucess, answer = self.api_handler.is_it_a_bank_holiday()
+        self.assertTrue(sucess)
+        self.assertEqual(answer, 'yes')
 
     @freeze_time(EASTER_SUNDAY)
     def test_is_it_a_bank_holiday_easter_sunday(self):
         """
         Test the is_it_a_bank_holiday method for Easter Sunday
         """
-        is_easter_sunday_a_bank_holiday, _ = self.api_handler.is_it_a_bank_holiday()
-        self.assertFalse(is_easter_sunday_a_bank_holiday)
+        success, answer = self.api_handler.is_it_a_bank_holiday()
+        self.assertTrue(success)
+        self.assertEqual(answer, 'no')
