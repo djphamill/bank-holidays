@@ -5,6 +5,7 @@ from unittest import TestCase
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver import ChromeOptions
 
 class TestApplication(TestCase):
     """
@@ -16,7 +17,10 @@ class TestApplication(TestCase):
     URL = f'http://{LOCAL_HOST}:{PORT}'
 
     def setUp(self) -> None:
-        self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+        self.chrome_options = ChromeOptions()
+        self.chrome_options.add_argument("headless")
+        self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), 
+                                       options=self.chrome_options)
     
     def test_title_of_homepage(self) -> None:
         """
@@ -25,5 +29,3 @@ class TestApplication(TestCase):
         self.driver.get(self.URL)
         title = self.driver.title
         self.assertEqual(title, "Bank Holiday?")
-        
-
