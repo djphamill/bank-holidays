@@ -1,4 +1,5 @@
 # Class to handle response from API
+import datetime
 import json 
 import requests 
 
@@ -21,6 +22,32 @@ class APIHandler(object):
 
     EVENTS = 'events'
     DATE = 'date'
+
+    DATE_FORMAT = '%Y-%m-%d'
+
+    RESPONSE_YES = 'yes'
+    RESPONSE_NO = 'no'
+    RESPONSE_ERROR = 'error'
+
+    def is_it_a_bank_holiday(self):
+        """
+        Method to run the flow for deciding if it is a bank holiday or not
+        """
+        try:
+            response = self.call_endpoint()
+            
+            response_json = response.text
+            self.validate_response_json(response_json)
+
+            bank_holidays = self.parse_response_json(response_json)
+
+            today= datetime.datetime.today().strftime(self.DATE_FORMAT)
+            if today in bank_holidays:
+                return True, self.RESPONSE_YES
+            else:
+                return False, self.RESPONSE_NO
+        except:
+            return False, self.RESPONSE_ERROR
 
     def call_endpoint(self):
         """

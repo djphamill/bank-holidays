@@ -1,7 +1,9 @@
 import ast
+import datetime
 from json import JSONDecodeError, loads
 from parameterized import parameterized
 from unittest import TestCase
+from freezegun import freeze_time
 
 from apihandler import APIHandler, ResponseError
 
@@ -10,6 +12,9 @@ class TestAPIResponseHandler(TestCase):
     """
     Tests for methods in the API Response Hanlder
     """
+
+    GOOD_FRIDAY = '2022-04-15'
+    EASTER_SUNDAY = '2022-04-16'
 
     def setUp(self):
         self.api_handler = APIHandler()
@@ -64,4 +69,18 @@ class TestAPIResponseHandler(TestCase):
         except ValueError:
             self.fail("Response returned text that was not JSON")
 
-        
+    @freeze_time(GOOD_FRIDAY)
+    def test_is_it_a_bank_holiday_good_friday(self):
+        """
+        Test the is_it_a_bank_holiday method for Good Friday
+        """
+        is_good_friday_a_bank_holiday, _ = self.api_handler.is_it_a_bank_holiday()
+        self.assertTrue(is_good_friday_a_bank_holiday)
+
+    @freeze_time(EASTER_SUNDAY)
+    def test_is_it_a_bank_holiday_easter_sunday(self):
+        """
+        Test the is_it_a_bank_holiday method for Easter Sunday
+        """
+        is_easter_sunday_a_bank_holiday, _ = self.api_handler.is_it_a_bank_holiday()
+        self.assertFalse(is_easter_sunday_a_bank_holiday)
